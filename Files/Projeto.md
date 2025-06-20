@@ -37,11 +37,26 @@ the scores on the game table, which will be converted into grades
 It's what we are going to analyse: the different ways students can play the game, the strategies they can use, and how these affect their outcomes.
 
 - **Maxmin:** Players choose strategies that maximize their minimum payoff, ensuring a baseline level of success.
+- **Minimax regret Player:** Jogador que tenta minimizar o seu máximo arrependimento
+- **Minimax:** Jogador que tenta minimizar o máximo payoff possível dos outros jogadores
 - **Minimax:** Players choose strategies that minimize their maximum loss, focusing on avoiding the worst outcome.
+- **Mixed Strategies:** Players randomize their strategies to keep opponents uncertain, potentially leading to more favorable outcomes.
+- **Most Reasonable Player:** Jogador que sempre vai no Melhor Equilíbrio de Nash Puro
 - **Nash Equilibrium:** A situation where no player can benefit by changing their strategy while others keep theirs unchanged, leading to a stable outcome.
 - **Pareto Optimality:** An outcome where no player can be made better off without making another player worse off, indicating an efficient allocation of resources.
-- **Mixed Strategies:** Players randomize their strategies to keep opponents uncertain, potentially leading to more favorable outcomes.
+- **Pareto Player:** Jogador que sempre descarta ações pareto-dominadas e, quando possível, escolhe a sua melhor ação pareto-ótima
+- **Reasonable Player:** Jogador que sempre vai no Equilíbrio de Nash Puro
+- **Removal of dominated strategies Player:** Jogador que remove estratégias dominadas e faz sua escolha com base nelas
+- **Risk Aversion Player:** Jogador que sempre descarta a opção de maior risco antes de tomar sua decisão
+- **Social Welfare Player:** Jogador que sempre busca cooperar, aumentando o social welfare
 - **Social Welfare:** The overall well-being of all players, considering the collective outcomes rather than individual gains, promoting cooperation and fairness.
+- **Temptation Player:** Jogador que sempre vai na opção que tem seu maior payoff possível
+- **Undecided Player:** Jogador Reasonable que, ao se deparar com mais de um equilíbrio de Nash, é indiferente a ambos e escolhe aleatoriamente uma das opções
+
+#### Soluções propostas
+
+- **Other Max:** Visa maximizar o welfare social dos outros jogadores.
+- **Other MeanMax:** Visa maximizar o welfare social dos outros jogadores sem grande diferença entre os jogadores.
 
 ## Discussion and conclusions
 
