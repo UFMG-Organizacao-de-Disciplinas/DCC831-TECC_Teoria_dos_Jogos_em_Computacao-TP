@@ -10,9 +10,11 @@ def get_players(num_players: int = 2) -> list[int]:
     Returns:
         list: A list of player identifiers in the format 'p1', 'p2',
     """
-    digits = len(str(num_players))
+    player_list = [
+        player_number for player_number in range(1, num_players + 1)]
 
-    player_list = [f'p{str(i+1).zfill(digits)}' for i in range(num_players)]
+    print(f'Players: {player_list}')
+
     return player_list
 
 
