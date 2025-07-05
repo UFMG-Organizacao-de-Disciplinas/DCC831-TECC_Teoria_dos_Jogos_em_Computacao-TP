@@ -24,4 +24,6 @@ def set_games(games_payoffs):
         'g10': {'players': 2, 'same_players': True, 'repetitions': 1, 'payoffs': games_payoffs['hawk_dove'], 'name': 'hawk_dove'},
     }
 
+    # print(f'We are going to play {len(game_sequence)} different games')
+
     return game_sequence
