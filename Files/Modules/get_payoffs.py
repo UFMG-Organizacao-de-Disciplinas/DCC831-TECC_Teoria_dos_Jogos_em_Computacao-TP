@@ -5,7 +5,7 @@
 """
 
 
-def get_payoffs(game_name: str = '') -> dict[str, dict[int, list[list[float]]]]:
+def get_payoffs(game_name: str = '') -> dict[str, dict[int, list[list[float]]]] | dict[int, list[list[float]]]:
     """ Returns the payoffs for the specified game.
 
     Args:

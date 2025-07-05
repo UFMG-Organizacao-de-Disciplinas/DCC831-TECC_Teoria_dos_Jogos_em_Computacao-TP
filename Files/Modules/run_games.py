@@ -5,7 +5,8 @@ if the number of players is odd, one player is left to play alone.
 It uses the `random` module to shuffle the player list and create pairs.
 """
 
-def draw_unique_players(players: list, alone_player: list | None = None) -> list:
+
+def draw_unique_players(players: list[tuple[str, str]], alone_player: list[str] | None = None) -> list:
     """ Function receives as input the player list, and returns the list of players
     per game ordering
 

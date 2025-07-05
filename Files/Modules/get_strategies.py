@@ -1,7 +1,7 @@
 """ Setting the strategies functions """
 
 
-def strat_minimax(game_name: str, player: str) -> int:
+
     """ Function receives as input the game name and the player label,
         and returns the minimax pure strategy
 
@@ -37,7 +37,7 @@ def strat_minimax(game_name: str, player: str) -> int:
     return minmax_action
 
 
-def strat_maxmin(game_name: str, player: str) -> int:
+def strat_maxmin(game_name: str, player: int) -> int:
     """ Function receives as input the game name and the player label,
         and returns the maxmin pure strategy
 
@@ -74,7 +74,7 @@ def strat_maxmin(game_name: str, player: str) -> int:
     return maxmin_action
 
 
-def strat_minimax_regret(game_name: str, player: str) -> int:
+def strat_minimax_regret(game_name: str, player: int) -> int:
     """ Function receives as input the game name and the player label,
         and returns the minimax regret pure strategy
 
@@ -109,7 +109,7 @@ def strat_minimax_regret(game_name: str, player: str) -> int:
     return minimax_regret_action
 
 
-def strat_social_welfare(game_name: str, player: str) -> int:
+def strat_social_welfare(game_name: str, player: int) -> int:
     """ Function receives as input the game number and the player label,
         and returns the social welfare pure strategy
 
