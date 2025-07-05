@@ -52,6 +52,14 @@ def draw_unique_players(players: list[tuple[str, str]], alone_player: list[str] 
     return player_sequence, alone_player
 
 
+    """ Function that runs the game for the players in the player_sequence
+    Args:
+        player_sequence (list): List of tuples with the players to play the game.
+        strategies (dict): Dictionary with the strategies of each player.
+        game_name (str): Name of the game to be played.
+    Returns:
+        tuple: Payoffs for player 1 and player 2.
+    """
 
 
 
