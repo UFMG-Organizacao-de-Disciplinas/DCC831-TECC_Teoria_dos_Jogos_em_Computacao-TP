@@ -1,7 +1,7 @@
 """ Handling Players and strategies functions """
 
 
-def get_players(num_players: int) -> list:
+def get_players(num_players: int = 2) -> list[int]:
     """ Create a list of players based on the number of players
 
     Args:
