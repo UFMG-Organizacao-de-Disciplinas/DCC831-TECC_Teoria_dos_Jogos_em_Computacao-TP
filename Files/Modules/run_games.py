@@ -30,7 +30,7 @@ def draw_unique_players(players: list[tuple[str, str]], alone_player: list[str] 
     # Defining as empty the player sequence
     player_sequence = []
 
-    # Draw considering the player left behind in the i-1 round  
+    # Draw considering the player left behind in the i-1 round
     if alone_player is not None and alone_player in players_left:
         players_left.remove(alone_player)
         player01 = alone_player
@@ -98,7 +98,7 @@ players = ['Rangel', 'João']
 strategies = {players[0]: 'maxmin', players[1]: 'maxmin'}
 
 # Testing of the game (not necessarily in the final module)
-#for i in range(num_games):
+# for i in range(num_games):
 player_sequence, alone_player = draw_unique_players(players, alone_player)
 game = get_payoffs(game_name)
 Payoff_1, Payoff_2 = lets_play_the_game(player_sequence,strategies,game_name)
@@ -109,5 +109,3 @@ print("Payoff for player 1: ", Payoff_1)
 print("Payoff for player 2: ", Payoff_2)
 print("Player left to the next round:", alone_player)
 print()
-
-
