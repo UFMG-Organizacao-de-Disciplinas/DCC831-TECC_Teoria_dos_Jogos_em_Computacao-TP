@@ -16,6 +16,10 @@ def setting_up_hyperparameters(players_num: int = 5, rounds_num: int = 10,
 
     Returns:
         dict: A dictionary containing the game parameters.
+            - `num_players`: Number of players in the game.
+            - `num_rounds`: Number of rounds in the game.
+            - `initial_score`: Initial score for each player.
+            - `participation_point`: Points awarded for participating in the game.
     """
 
     gaming_parameters = {
