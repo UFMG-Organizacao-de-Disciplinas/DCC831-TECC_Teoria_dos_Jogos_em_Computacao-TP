@@ -1,7 +1,7 @@
-""" Setting up the games
-    - Descobrir como a biblioteca aceita a definição de jogos
-    - Como usar equilíbrio correlacionado?
-    - Como repetir o mesmo jogo?
+""" Setting up the games:
+    - Define which libraries to use and how they define the games
+    - How to use correlated equilibrium?
+    - How to repeat the same game?
 """
 
 
