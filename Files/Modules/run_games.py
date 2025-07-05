@@ -52,6 +52,7 @@ def draw_unique_players(players: list[tuple[str, str]], alone_player: list[str] 
     return player_sequence, alone_player
 
 
+def lets_play_the_game(player_sequence, strategies, game_name) -> tuple[int, int]:
     """ Function that runs the game for the players in the player_sequence
     Args:
         player_sequence (list): List of tuples with the players to play the game.
@@ -64,7 +65,6 @@ def draw_unique_players(players: list[tuple[str, str]], alone_player: list[str] 
 
 
 
-def lets_play_the_game(player_sequence,strategies,game_name):
 
   # Assigning the label of each player to p1 and p2
   p1 = player_sequence[0][0]
