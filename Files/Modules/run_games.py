@@ -62,31 +62,21 @@ def lets_play_the_game(player_sequence, strategies, game_name) -> tuple[int, int
         tuple: Payoffs for player 1 and player 2.
     """
 
+    # Assigning the label of each player to p1 and p2
+    p1 = player_sequence[0][0]
+    p2 = player_sequence[0][1]
 
+    # Run of the game for player 1 based on his strategy
+    action_1 = get_strategies()[strategies[p1]](game_name, 1)
 
+    # Run of the game for player 2 based on his strategy
+    action_2 = get_strategies()[strategies[p2]](game_name, 2)
 
+    # Payoff for player 1 at (action_1, action_2) profile
+    payoff_1 = get_payoffs(game_name)[1][action_1][action_2]
 
-  # Assigning the label of each player to p1 and p2
-  p1 = player_sequence[0][0]
-  p2 = player_sequence[0][1]
-
-
-  #Run of the game for player 1 based on his strategy
-  action_1 = get_strategies()[strategies[p1]](game_name, 1)
-
-  #Run of the game for player 2 based on his strategy
-  action_2 = get_strategies()[strategies[p2]](game_name, 2)
-
-  #Payoff for player 1 at (action_1, action_2) profile
-  payoff_1 = get_payoffs(game_name)[1][action_1][action_2]
-
-  #Run of the game for player 2 based on his strategy
-  payoff_2 = get_payoffs(game_name)[2][action_1][action_2]
-
-
-
-
-
+    # Run of the game for player 2 based on his strategy
+    payoff_2 = get_payoffs(game_name)[2][action_1][action_2]
 
     return (payoff_1, payoff_2)
 
@@ -101,7 +91,8 @@ strategies = {players[0]: 'maxmin', players[1]: 'maxmin'}
 # for i in range(num_games):
 player_sequence, alone_player = draw_unique_players(players, alone_player)
 game = get_payoffs(game_name)
-Payoff_1, Payoff_2 = lets_play_the_game(player_sequence,strategies,game_name)
+(Payoff_1, Payoff_2) = lets_play_the_game(
+    player_sequence, strategies, game_name)
 print(f"Round {i+1}:")
 print("Player sequence:", player_sequence)
 print("Game played: ", game_name)

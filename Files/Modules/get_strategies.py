@@ -1,7 +1,9 @@
 """ Setting the strategies functions """
 
+from Files.Modules.get_payoffs import get_payoffs
 
 
+def strat_minimax(game_name: str, player: int) -> int:
     """ Function receives as input the game name and the player label,
         and returns the minimax pure strategy
 
@@ -13,6 +15,7 @@
         int: The index of the action that corresponds to the minimax strategy for the player.
     """
 
+    # Fix the get_payoffs kinda over typed return
     payoffs = get_payoffs(game_name)[player]
 
     if player == 1:
