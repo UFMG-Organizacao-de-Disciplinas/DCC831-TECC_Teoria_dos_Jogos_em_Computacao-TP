@@ -83,12 +83,12 @@ def lets_play_the_game(player_sequence, strategies, game_name) -> tuple[int, int
   #Run of the game for player 2 based on his strategy
   payoff_2 = get_payoffs(game_name)[2][action_1][action_2]
 
-  return payoff_1, payoff_2
 
 
 
 
 
+    return (payoff_1, payoff_2)
 
 
 # Testing of the game (not necessarily in the final module)
