@@ -6,12 +6,14 @@ It takes a list of game results, where each result is a dictionary containing ga
 
 def plot_games(results: list) -> None:
     """ Plot the results of the games
+
     Args:
         results (list): List of game results, where each result is a
-        dictionary containing game details.
+            dictionary containing game details.
+
     Returns:
         None: This function does not return anything; it is intended to
-        display the results visually.
+            display the results visually.
     """
     print("Plotting game results...")
     for result in results:

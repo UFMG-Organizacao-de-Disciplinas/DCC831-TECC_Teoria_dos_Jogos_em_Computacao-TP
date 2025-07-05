@@ -2,7 +2,17 @@
 
 
 def strat_reasonable_minimax(game_sequence: list, game_number: int, player: str) -> int:
-    """ Function receives as input the game number and the player label, and returns the minimax pure strategy """
+    """ Function receives as input the game number and the player label,
+        and returns the minimax pure strategy
+
+    Args:
+        game_sequence (list): List of games played.
+        game_number (int): The index of the game in the game_sequence.
+        player (str): The player label, either 'p1' or 'p2'.
+
+    Returns:
+        int: The index of the action that corresponds to the minimax strategy for the player.
+    """
     payoffs = game_sequence[game_number]['payoffs'][player]
 
     if player == 'p1':
@@ -29,8 +39,18 @@ def strat_reasonable_minimax(game_sequence: list, game_number: int, player: str)
     return minmax_action
 
 
-def strat_minimax(game_sequence, game_number, player):
-    """ Function receives as input the game number and the player label, and returns the minimax pure strategy """
+def strat_minimax(game_sequence: list, game_number: int, player: str) -> int:
+    """ Function receives as input the game number and the player label,
+        and returns the minimax pure strategy
+
+    Args:
+        game_sequence (list): List of games played.
+        game_number (int): The index of the game in the game_sequence.
+        player (str): The player label, either 'p1' or 'p2'.
+
+    Returns:
+        int: The index of the action that corresponds to the minimax strategy for the player.
+    """
 
     payoffs = game_sequence[game_number]['payoffs'][player]
 
@@ -57,7 +77,17 @@ def strat_minimax(game_sequence, game_number, player):
 
 
 def strat_maxmin(game_sequence, game_number, player):
-    """ Function receives as input the game number and the player label, and returns the maxmin pure strategy """
+    """ Function receives as input the game number and the player label,
+        and returns the maxmin pure strategy
+
+    Args:
+        game_sequence (list): List of games played.
+        game_number (int): The index of the game in the game_sequence.
+        player (str): The player label, either 'p1' or 'p2'.
+
+    Returns:
+        int: The index of the action that corresponds to the maxmin strategy for the player.
+    """
 
     payoffs = game_sequence[game_number]['payoffs'][player]
 
@@ -84,8 +114,18 @@ def strat_maxmin(game_sequence, game_number, player):
     return maxmin_action
 
 
-def strat_minimax_regret(game_sequence, game_number, player):
-    """ Function receives as input the game number and the player label, and returns the minimax regret pure strategy """
+def strat_minimax_regret(game_sequence: list, game_number: int, player: str) -> int:
+    """ Function receives as input the game number and the player label,
+        and returns the minimax regret pure strategy
+
+    Args:
+        game_sequence (list): List of games played.
+        game_number (int): The index of the game in the game_sequence.
+        player (str): The player label, either 'p1' or 'p2'.
+
+    Returns:
+        int: The index of the action that corresponds to the minimax regret strategy for the player.
+    """
 
     payoffs = game_sequence[game_number]['payoffs'][player]
 
@@ -111,7 +151,18 @@ def strat_minimax_regret(game_sequence, game_number, player):
 
 
 def strat_social_welfare(game_sequence, game_number, player):
-    """ Function receives as input the game number and the player label, and returns the social welfare pure strategy"""
+    """ Function receives as input the game number and the player label,
+        and returns the social welfare pure strategy
+
+    Args:
+        game_sequence (list): List of games played.
+        game_number (int): The index of the game in the game_sequence.
+        player (str): The player label, either 'p1' or 'p2'.
+
+    Returns:
+        int: The index of the action that corresponds to the social welfare strategy for the player.
+    """
+
     # Collecting the payoff matrices from both players
     if player == 'p1':
         other_player = 'p2'
@@ -131,9 +182,8 @@ def strat_social_welfare(game_sequence, game_number, player):
     return social_welfare_action
 
 
-def get_strategies():
-    """
-    Get the strategies available for the games.
+def get_strategies() -> dict:
+    """ Get the strategies available for the games.
 
     Returns:
         dict: A dictionary containing the strategies and their respective functions.

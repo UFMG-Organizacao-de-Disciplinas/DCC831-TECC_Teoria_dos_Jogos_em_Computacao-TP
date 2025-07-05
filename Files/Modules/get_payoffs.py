@@ -5,7 +5,7 @@
 """
 
 
-def get_payoffs(game_name=''):
+def get_payoffs(game_name: str = '') -> dict:
     """ Returns the payoffs for the specified game.
 
     Args:
@@ -102,6 +102,6 @@ def get_payoffs(game_name=''):
         },
     }
     if not game_name:
-        return game_name
+        return games_payoffs
 
-    return games_payoffs.get(game_name, None)
+    return games_payoffs.get(game_name, {})
