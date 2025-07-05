@@ -58,8 +58,8 @@ def draw_unique_players(players: list, alone_player: list | None = None) -> list
 def lets_play_the_game(player_sequence,strategies,game_name):
 
   # Assigning the label of each player to p1 and p2
-  p1 = player_sequence[0]
-  p2 = player_sequence[1]
+  p1 = player_sequence[0][0]
+  p2 = player_sequence[0][1]
 
 
   #Run of the game for player 1 based on his strategy
@@ -83,14 +83,22 @@ def lets_play_the_game(player_sequence,strategies,game_name):
 
 
 # Testing of the game (not necessarily in the final module)
-players = ['Rangel', 'João', 'Hard-Enzo']
-alone_player = None  
-num_games = 5
+game_name = 'prisoners_dilemma'
+num_games = 1
+players = ['Rangel', 'João']
+strategies = {players[0]: 'maxmin', players[1]: 'maxmin'}
 
-for i in range(num_games):
-    player_sequence, alone_player = draw_unique_players(players, alone_player)
-    print(f"Round {i+1}:")
-    print("Player sequence:", player_sequence)
-    print("Player left to the next round:", alone_player)
-    print()
+# Testing of the game (not necessarily in the final module)
+#for i in range(num_games):
+player_sequence, alone_player = draw_unique_players(players, alone_player)
+game = get_payoffs(game_name)
+Payoff_1, Payoff_2 = lets_play_the_game(player_sequence,strategies,game_name)
+print(f"Round {i+1}:")
+print("Player sequence:", player_sequence)
+print("Game played: ", game_name)
+print("Payoff for player 1: ", Payoff_1)
+print("Payoff for player 2: ", Payoff_2)
+print("Player left to the next round:", alone_player)
+print()
+
 
