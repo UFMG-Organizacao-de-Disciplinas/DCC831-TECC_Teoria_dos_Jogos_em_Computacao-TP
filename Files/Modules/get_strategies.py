@@ -8,14 +8,14 @@ def strat_reasonable_minimax(game_sequence: list, game_number: int, player: str)
     Args:
         game_sequence (list): List of games played.
         game_number (int): The index of the game in the game_sequence.
-        player (str): The player label, either 'p1' or 'p2'.
+        player (str): The player label, either 1 or 2.
 
     Returns:
         int: The index of the action that corresponds to the minimax strategy for the player.
     """
     payoffs = game_sequence[game_number]['payoffs'][player]
 
-    if player == 'p1':
+    if player == 1:
         max_column = []                                 # Initializing the vector as empty
         for i in range(len(payoffs[0])):
             # Taking the max value for each row in the column i
@@ -46,7 +46,7 @@ def strat_minimax(game_sequence: list, game_number: int, player: str) -> int:
     Args:
         game_sequence (list): List of games played.
         game_number (int): The index of the game in the game_sequence.
-        player (str): The player label, either 'p1' or 'p2'.
+        player (str): The player label, either 1 or 2.
 
     Returns:
         int: The index of the action that corresponds to the minimax strategy for the player.
@@ -54,7 +54,7 @@ def strat_minimax(game_sequence: list, game_number: int, player: str) -> int:
 
     payoffs = game_sequence[game_number]['payoffs'][player]
 
-    if player == 'p1':
+    if player == 1:
         # Initializing the vector as empty
         max_column = []
 
@@ -83,7 +83,7 @@ def strat_maxmin(game_sequence, game_number, player):
     Args:
         game_sequence (list): List of games played.
         game_number (int): The index of the game in the game_sequence.
-        player (str): The player label, either 'p1' or 'p2'.
+        player (str): The player label, either 1 or 2.
 
     Returns:
         int: The index of the action that corresponds to the maxmin strategy for the player.
@@ -91,7 +91,7 @@ def strat_maxmin(game_sequence, game_number, player):
 
     payoffs = game_sequence[game_number]['payoffs'][player]
 
-    if player == 'p1':
+    if player == 1:
         # Analyzing which action contains the maxmin payoff
         min_row = [min(action) for action in payoffs]
         maxmin_action = min_row.index(max(min_row))
@@ -121,7 +121,7 @@ def strat_minimax_regret(game_sequence: list, game_number: int, player: str) -> 
     Args:
         game_sequence (list): List of games played.
         game_number (int): The index of the game in the game_sequence.
-        player (str): The player label, either 'p1' or 'p2'.
+        player (str): The player label, either 1 or 2.
 
     Returns:
         int: The index of the action that corresponds to the minimax regret strategy for the player.
@@ -129,7 +129,7 @@ def strat_minimax_regret(game_sequence: list, game_number: int, player: str) -> 
 
     payoffs = game_sequence[game_number]['payoffs'][player]
 
-    if player == 'p1':
+    if player == 1:
         # Initializing the vectors as empty
         max_column = []
         regret_matrix = []
@@ -157,17 +157,17 @@ def strat_social_welfare(game_sequence, game_number, player):
     Args:
         game_sequence (list): List of games played.
         game_number (int): The index of the game in the game_sequence.
-        player (str): The player label, either 'p1' or 'p2'.
+        player (str): The player label, either 1 or 2.
 
     Returns:
         int: The index of the action that corresponds to the social welfare strategy for the player.
     """
 
     # Collecting the payoff matrices from both players
-    if player == 'p1':
-        other_player = 'p2'
+    if player == 1:
+        other_player = 2
     else:
-        other_player = 'p1'
+        other_player = 1
     payoffs_player = game_sequence[game_number]['payoffs'][player]
     payoffs_other = game_sequence[game_number]['payoffs'][other_player]
 
