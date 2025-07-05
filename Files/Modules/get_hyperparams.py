@@ -4,8 +4,11 @@ This module defines the global game parameters for the Benevolent Gaming scenari
 """
 
 
-def setting_up_hyperparameters(players_num: int = 5, rounds_num: int = 10,
-                               initial_score: int = 0, participation_point: int = 1) -> dict:
+def setting_up_hyperparameters(
+        num_players: int = 5,
+        num_rounds: int = 10,
+        initial_score: int = 0,
+        participation_point: int = 1) -> dict[str, int]:
     """ Defining the global game parameters
 
     Args:
@@ -23,8 +26,8 @@ def setting_up_hyperparameters(players_num: int = 5, rounds_num: int = 10,
     """
 
     gaming_parameters = {
-        'num_players': players_num,
-        'num_rounds': rounds_num,
+        'num_players': num_players,
+        'num_rounds': num_rounds,
         'initial_score': initial_score,
         'participation_point': participation_point,
     }
