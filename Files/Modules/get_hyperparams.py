@@ -5,28 +5,33 @@ This module defines the global game parameters for the Benevolent Gaming scenari
 
 
 def setting_up_hyperparameters(
-        num_players: int = 5,
+        strat_count = {
+            'minimax': 2,
+            'maxmin': 3,
+            'minimax_regret': 4,
+            'social_welfare': 5,
+        },
         num_rounds: int = 10,
         initial_score: int = 0,
         participation_point: int = 1) -> dict[str, int]:
     """ Defining the global game parameters
 
     Args:
-        players_num (int): Number of players in the game.
-        rounds_num (int): Number of rounds in the game.
+        strat_count (dict): Number of players in class per strategy.
+        num_rounds (int): Number of rounds in the game.
         initial_score (int): Initial score for each player.
         participation_point (int): Points awarded for participating in the game.
 
     Returns:
         dict: A dictionary containing the game parameters.
-            1. `players_num`: Number of players in the game.
-            2. `rounds_num`: Number of rounds in the game.
+            1. `strat_count`: Number of players in class per strategy.
+            2. `num_rounds`: Number of rounds in the game.
             3. `initial_score`: Initial score for each player.
             4. `participation_point`: Points awarded for participating in the game.
     """
 
     gaming_parameters = {
-        'num_players': num_players,
+        'strat_count': strat_count,
         'num_rounds': num_rounds,
         'initial_score': initial_score,
         'participation_point': participation_point,
