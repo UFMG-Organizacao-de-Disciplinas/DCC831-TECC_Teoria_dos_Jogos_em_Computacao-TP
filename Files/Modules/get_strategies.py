@@ -1,7 +1,7 @@
 """ Setting the strategies functions """
 
 
-def strat_reasonable_minimax(game_sequence, game_number, player):
+def strat_reasonable_minimax(game_sequence: list, game_number: int, player: str) -> int:
     """ Function receives as input the game number and the player label, and returns the minimax pure strategy """
     payoffs = game_sequence[game_number]['payoffs'][player]
 
