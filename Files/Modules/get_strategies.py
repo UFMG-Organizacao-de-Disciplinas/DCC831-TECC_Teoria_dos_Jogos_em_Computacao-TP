@@ -144,7 +144,7 @@ def get_strategies() -> dict:
     """ Get the strategies available for the games.
 
     Returns:
-        dict: A dictionary containing the strategies and their respective functions.
+        strategies (dict): A dictionary containing the strategies and their respective functions.
     """
 
     strategies = {

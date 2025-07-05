@@ -27,7 +27,7 @@ def set_player_strategies(players: list, strategies: dict) -> dict:
             and values are lists of strategies available to each player.
 
     Returns:
-        dict: A dictionary where each key is a player identifier and the value
+        player_strat (dict): A dictionary where each key is a player identifier and the value
     """
     player_strat = {player: strategies for player in players}
     return player_strat
