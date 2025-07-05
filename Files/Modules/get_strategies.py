@@ -1,6 +1,6 @@
 """ Setting the strategies functions """
 
-from Files.Modules.get_payoffs import get_payoffs
+from get_payoffs import get_payoffs
 
 
 def strat_minimax(game_name: str, player: int) -> int:
