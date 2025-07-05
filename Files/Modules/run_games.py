@@ -5,10 +5,7 @@ if the number of players is odd, one player is left to play alone.
 It uses the `random` module to shuffle the player list and create pairs.
 """
 
-import random
-
-
-def draw_unique_players(players: list, alone_player: list | None = None) -> tuple:
+def draw_unique_players(players, alone_player):
     """ Function receives as input the player list, and returns the list of players
     per game ordering
 
@@ -25,30 +22,45 @@ def draw_unique_players(players: list, alone_player: list | None = None) -> tupl
             of players is odd.
     """
 
-    # Making the shuffle of the players left to play in class
-    players_left = players
+    import random
+
+    # Copying the players list so it will not be modified
+    players_left = players.copy()
+    # Shuffling the players_left list to be drawn
     random.shuffle(players_left)
+    # Defining as empty the player sequence
     player_sequence = []
 
+    # Draw considering the player left behind in the i-1 round  
+    if alone_player is not None and alone_player in players_left:
+        players_left.remove(alone_player)
+        player01 = alone_player
+        player02 = players_left.pop()
+        player_sequence.append((player01, player02))
+
+    # Draw considering the normal case when there are more than 2 player left
     while len(players_left) >= 2:
-        if alone_player:
-            player01 = players_left.pop(players.index(alone_player))
-            player02 = players_left.pop()
-            player_sequence.append((player01, player02))
+        player01 = players_left.pop()
+        player02 = players_left.pop()
+        player_sequence.append((player01, player02))
 
-        else:
-            player01 = players_left.pop()
-            player02 = players_left.pop()
-            player_sequence.append((player01, player02))
-
+    # Special case when there is one player left to be the first priority on the next round
     if len(players_left) == 1:
         alone_player = players_left[0]
+    else:
+        alone_player = None
 
     return player_sequence, alone_player
 
+# Testing of the game (not necessarily in the final module)
+players = ['Rangel', 'João', 'Hard-Enzo']
+alone_player = None  
+num_games = 5
 
-all_players = ['Rangel', 'João', 'Hard-Enzo']
-selected_players, solo_player = draw_unique_players(all_players)
+for i in range(num_games):
+    player_sequence, alone_player = draw_unique_players(players, alone_player)
+    print(f"Round {i+1}:")
+    print("Player sequence:", player_sequence)
+    print("Player left to the next round:", alone_player)
+    print()
 
-print(selected_players)
-print(solo_player)
