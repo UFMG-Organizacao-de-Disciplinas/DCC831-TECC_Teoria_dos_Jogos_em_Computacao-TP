@@ -91,6 +91,7 @@ def strat_minimax_regret(game_name: str, player: int) -> int:
 
     payoffs = get_payoffs(game_name)[player]
 
+
     if player == 1:
         # Initializing the vectors as empty
         max_column = []
@@ -108,6 +109,24 @@ def strat_minimax_regret(game_name: str, player: int) -> int:
         # Analyzing which action minimizes the regret
         max_regret = [max(action) for action in regret_matrix]
         minimax_regret_action = max_regret.index(min(max_regret))
+        
+    else:
+        num_rows = len(payoffs)
+        num_cols = len(payoffs[0])
+
+        regret_matrix = []
+
+        for i in range(num_rows):
+            row_max = max(payoffs[i])
+            row_regrets = [row_max - payoffs[i][j] for j in range(num_cols)]
+            regret_matrix.append(row_regrets)
+
+        max_regret_per_col = []
+        for j in range(num_cols):
+            col = [regret_matrix[i][j] for i in range(num_rows)]
+            max_regret_per_col.append(max(col))
+
+        minimax_regret_action = max_regret_per_col.index(min(max_regret_per_col))
 
     return minimax_regret_action
 
