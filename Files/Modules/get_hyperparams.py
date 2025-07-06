@@ -5,7 +5,7 @@ This module defines the global game parameters for the Benevolent Gaming scenari
 
 
 def setting_up_hyperparameters(
-        strat_count = {
+        strat_count={
             'minimax': 2,
             'maxmin': 3,
             'minimax_regret': 4,
