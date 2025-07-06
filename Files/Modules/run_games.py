@@ -54,7 +54,7 @@ def draw_unique_players(strat_count: dict, alone_player: list[str] | None = None
     return player_sequence, alone_player
 
 
-def lets_play_the_game(player_sequence, strategies, game_name) -> tuple[int, int]:
+def lets_play_the_game(game_num, players, game_name) -> tuple[int, int]:
     """ Function that runs the game for the players in the player_sequence
     Args:
         player_sequence (list): List of tuples with the players to play the game.
@@ -65,14 +65,14 @@ def lets_play_the_game(player_sequence, strategies, game_name) -> tuple[int, int
     """
 
     # Assigning the label of each player to p1 and p2
-    p1 = player_sequence[0][0]
-    p2 = player_sequence[0][1]
+    p1 = player_sequence[game_num][0]
+    p2 = player_sequence[game_num][1]
 
     # Run of the game for player 1 based on his strategy
-    action_1 = get_strategies()[strategies[p1]](game_name, 1)
+    action_1 = get_strategies()[players[p1]](game_name, 1)
 
     # Run of the game for player 2 based on his strategy
-    action_2 = get_strategies()[strategies[p2]](game_name, 2)
+    action_2 = get_strategies()[players[p2]](game_name, 2)
 
     # Payoff for player 1 at (action_1, action_2) profile
     payoff_1 = get_payoffs(game_name)[1][action_1][action_2]
