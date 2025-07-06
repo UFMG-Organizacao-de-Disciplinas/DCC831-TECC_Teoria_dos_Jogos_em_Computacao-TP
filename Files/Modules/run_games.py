@@ -9,6 +9,7 @@ from Modules.get_payoffs import get_payoffs
 from Modules.get_players import get_players
 from Modules.get_strategies import get_strategies
 
+
 def draw_unique_players(hyperparams: dict, gen: int, alone_player: list[str] | None = None) -> list:
     """ Function receives as input the player list, and returns the list of players
     per game ordering
@@ -25,7 +26,7 @@ def draw_unique_players(hyperparams: dict, gen: int, alone_player: list[str] | N
     """
 
     import random
-    
+
     random.seed(gen)  # For reproducibility, can be removed in production
     # Copying the players list so it will not be modified
     players_left = list(get_players(hyperparams).keys()).copy()
@@ -68,21 +69,27 @@ def lets_play_the_game(hyperparams: dict, gen: int) -> tuple[int, int]:
     players = get_players(hyperparams)
     alone_player = None
     payoff_summary = []
-    
+
     (player_sequence, alone_player) = draw_unique_players(hyperparams, alone_player)
-    
+
     num_games = min(len(get_payoffs()), len(player_sequence))
-    
-    print(f'Class composition: {max(list(players.keys()))} students')
-    print()
+
+    class_composition = f'Class composition: {max(list(players.keys()))} students\n'
+
     for i, key in enumerate(hyperparams):
         total_players = sum(hyperparams.values())
-        print(f'{key}: {hyperparams[key]} players, approximately {hyperparams[key] / total_players * 100:.2f}% of the class')
-    print('-' * 40)
+        percentage_players = hyperparams[key] / total_players * 100
+        player_strat_msg = f'{key}:\t{hyperparams[key]} players, '
+        percentage_msg = f'approximately {percentage_players:.2f}% of the class\n'
+        class_composition += '\t' + player_strat_msg + percentage_msg
+
+    class_composition += '-' * 40
+    print(class_composition)
+
     for i in range(num_games):
-        
+
         game_name = list(get_payoffs().keys())[i]
-        
+
         # Assigning the label of each player to p1 and p2
         p1 = player_sequence[i][0]
         p2 = player_sequence[i][1]
@@ -94,20 +101,19 @@ def lets_play_the_game(hyperparams: dict, gen: int) -> tuple[int, int]:
         # Payoffs for the players at (action_1, action_2) profile
         payoff_1 = get_payoffs(game_name)[1][action_1][action_2]
         payoff_2 = get_payoffs(game_name)[2][action_1][action_2]
-        
+
         # Collecting the games' summary
         payoff_summary.append({p1: payoff_1, p2: payoff_2})
-        
+
         # Print the results of the game
-        print(f'Game {i + 1}: {game_name}')
-        print(f'Players: {p1} vs {p2}')
-        print(f'Actions: {p1} -> {action_1}, {p2} -> {action_2}')
-        print(f'Payoffs: {p1} -> {payoff_1}, {p2} -> {payoff_2}')
-        print('-' * 40)
+        result_msg = f'Game {i + 1} of {num_games}:\t'
+        result_msg += f'Players: ({p1}, {p2}) -> ({action_1}, {action_2})\t'
+        result_msg += f'Payoffs: ({p1}, {p2}) -> ({payoff_1}, {payoff_2})\n'
+        result_msg += '-' * 40
+        print(result_msg)
         if i == len(get_payoffs()) - 1 and alone_player is not None:
             print(f'Player left behind: {alone_player}')
-            
-        
+
     return payoff_summary
 
 
@@ -124,5 +130,5 @@ def gen_games(hyperparams: dict, gen: int) -> list:
         print(f'Round {gen_i} of {gen}')
         payoff_summary = lets_play_the_game(hyperparams, gen_i)
         general_summary.append(payoff_summary)
-        
+
     return general_summary
