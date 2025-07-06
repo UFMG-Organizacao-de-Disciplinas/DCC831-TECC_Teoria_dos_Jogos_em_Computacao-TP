@@ -4,7 +4,7 @@ It takes a list of game results, where each result is a dictionary containing ga
 """
 
 
-from get_payoffs import get_payoffs
+from .get_payoffs import get_payoffs
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -88,4 +88,4 @@ def plot_games(games=None, strategies=None, players: list[tuple[int, int]] = Non
     plot_gamepoints_line_graph_progression(plotting_data)
 
 
-plot_games()
+# plot_games()
