@@ -5,8 +5,11 @@ if the number of players is odd, one player is left to play alone.
 It uses the `random` module to shuffle the player list and create pairs.
 """
 
+from get_payoffs import get_payoffs
+from get_players import get_players
+from get_strategies import get_strategies
 
-def draw_unique_players(players: list[tuple[str, str]], alone_player: list[str] | None = None) -> list:
+def draw_unique_players(strat_count: dict, alone_player: list[str] | None = None) -> list:
     """ Function receives as input the player list, and returns the list of players
     per game ordering
 
@@ -22,16 +25,15 @@ def draw_unique_players(players: list[tuple[str, str]], alone_player: list[str] 
     """
 
     import random
-
     # Copying the players list so it will not be modified
-    players_left = players.copy()
+    players_left = list(get_players(strat_count).keys()).copy()
     # Shuffling the players_left list to be drawn
     random.shuffle(players_left)
     # Defining as empty the player sequence
     player_sequence = []
 
     # Draw considering the player left behind in the i-1 round
-    if alone_player is not None and alone_player in players_left:
+    if alone_player in players_left:
         players_left.remove(alone_player)
         player01 = alone_player
         player02 = players_left.pop()
@@ -93,7 +95,7 @@ player_sequence, alone_player = draw_unique_players(players, alone_player)
 game = get_payoffs(game_name)
 (Payoff_1, Payoff_2) = lets_play_the_game(
     player_sequence, strategies, game_name)
-print(f"Round {i+1}:")
+#print(f"Round {i+1}:")
 print("Player sequence:", player_sequence)
 print("Game played: ", game_name)
 print("Payoff for player 1: ", Payoff_1)
