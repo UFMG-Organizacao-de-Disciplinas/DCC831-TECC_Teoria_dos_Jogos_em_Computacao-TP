@@ -24,7 +24,7 @@ def get_players(strat_count: dict[str, int]) -> dict:
     for count in list(strat_count.values()):
         num_players += count
         cummulative_players.append(num_players)
-    players = [i for i in range(1, num_players + 1)]
+    players = list(range(1, num_players + 1))
 
     # Assigning strategies to players based on the cumulative counts
     for i in range(1, num_players + 1):
