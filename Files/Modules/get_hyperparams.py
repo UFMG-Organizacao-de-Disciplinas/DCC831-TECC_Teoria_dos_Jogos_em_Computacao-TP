@@ -12,7 +12,7 @@ def setting_up_hyperparameters(
             'social_welfare': 5,
         },
         num_rounds: int = 10,
-        initial_score: float = 0.0,
+        initial_score: float = 0.1,
         participation_point: float = 1.0) -> dict[str, int]:
     """ Defining the global game parameters
 

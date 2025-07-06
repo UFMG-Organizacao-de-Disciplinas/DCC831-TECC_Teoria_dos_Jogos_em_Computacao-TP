@@ -22,9 +22,6 @@ def plot_gamepoints_line_graph_progression(plotting_data):
     players = plotting_data['players']
     results = plotting_data['results']
 
-    def data_preprocess(players, results):
-        """ WIP """
-
     plt.style.use('_mpl-gallery')
 
     # make data
