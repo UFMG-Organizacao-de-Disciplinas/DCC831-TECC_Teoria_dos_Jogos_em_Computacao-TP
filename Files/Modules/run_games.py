@@ -5,9 +5,9 @@ if the number of players is odd, one player is left to play alone.
 It uses the `random` module to shuffle the player list and create pairs.
 """
 
-from get_payoffs import get_payoffs
-from get_players import get_players
-from get_strategies import get_strategies
+from .get_payoffs import get_payoffs
+from .get_players import get_players
+from .get_strategies import get_strategies
 
 def draw_unique_players(strat_count: dict, alone_player: list[str] | None = None) -> list:
     """ Function receives as input the player list, and returns the list of players
@@ -64,6 +64,7 @@ def lets_play_the_game(game_num, players, game_name) -> tuple[int, int]:
         tuple: Payoffs for player 1 and player 2.
     """
 
+    for i in range(len(get_payoffs())):
     # Assigning the label of each player to p1 and p2
     p1 = player_sequence[game_num][0]
     p2 = player_sequence[game_num][1]
