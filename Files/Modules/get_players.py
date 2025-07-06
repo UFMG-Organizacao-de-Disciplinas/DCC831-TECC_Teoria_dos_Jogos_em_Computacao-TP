@@ -1,7 +1,7 @@
 """ Handling Players and strategies functions """
 
 
-def get_players(strat_count):
+def get_players(strat_count: dict) -> dict:
     """ Create a list of players based on the number of players per strategy.
 
     Args:
