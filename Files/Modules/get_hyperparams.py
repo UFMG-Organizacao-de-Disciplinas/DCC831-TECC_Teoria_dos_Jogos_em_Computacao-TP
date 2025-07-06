@@ -7,8 +7,8 @@ This module defines the global game parameters for the Benevolent Gaming scenari
 def setting_up_hyperparameters(
         strat_count: dict[str, int],
         num_rounds: int = 10,
-        initial_score: int = 0,
-        participation_point: int = 1) -> dict[str, int]:
+        initial_score: float = 0.0,
+        participation_point: float = 1.0) -> dict[str, int]:
     """ Defining the global game parameters
 
     Args:
