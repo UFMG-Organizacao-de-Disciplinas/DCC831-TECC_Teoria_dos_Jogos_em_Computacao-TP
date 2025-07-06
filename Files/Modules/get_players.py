@@ -1,33 +1,40 @@
 """ Handling Players and strategies functions """
 
 
-def get_players(num_players: int = 2) -> list[int]:
-    """ Create a list of players based on the number of players
+def get_players(strat_count):
+    """ Create a list of players based on the number of players per strategy.
 
     Args:
-        num_players (int): The number of players in the game.
+        strat_count (dict): The number of players per strategy.
 
     Returns:
         list: A list of player identifiers in the format 'p1', 'p2',
     """
-    player_list = [
-        player_number for player_number in range(1, num_players + 1)]
+    import random
 
-    print(f'Players: {player_list}')
+    # Initializing some variables
+    num_players = 0
+    num_strategy = 0
+    cummulative_players = []
+    player_strat = {}
+    players = []
+ 
+    # Creating a list of players based on the number of players per strategy
+    for count in list(strat_count.values()):
+        num_players += count
+        cummulative_players.append(num_players)
+    players = [i for i in range(1, num_players + 1)]
 
-    return player_list
+    # Assigning strategies to players based on the cumulative counts
+    for i in range(1, num_players + 1):
+        if i > cummulative_players[num_strategy]:
+            num_strategy += 1
+        player_strat[i] = list(strat_count.keys())[num_strategy]
+    
+    # Randomizing the order of strategies for players
+    values = list(player_strat.values())
+    random.shuffle(values)
+    players = dict(zip(player_strat.keys(), values))
+    
+    return players
 
-
-def set_player_strategies(players: list, strategies: dict) -> dict:
-    """ Assign strategies to players
-
-    Args:
-        players (list): A list of player identifiers.
-        strategies (dict): A dictionary where keys are player identifiers
-            and values are lists of strategies available to each player.
-
-    Returns:
-        player_strat (dict): A dictionary where each key is a player identifier and the value
-    """
-    player_strat = {player: strategies for player in players}
-    return player_strat
