@@ -112,19 +112,19 @@ def strat_minimax_regret(game_name: str, player: int) -> int:
         
     else:
         num_rows = len(payoffs)
-        num_cols = len(payoffs[0])
 
         regret_matrix = []
+        max_regret_per_col = []
 
         for i in range(num_rows):
-            row_max = max(payoffs[i])
-            row_regrets = [row_max - payoffs[i][j] for j in range(num_cols)]
+            row = payoffs[i]
+            row_max = max(row)
+            row_regrets = [row_max - val for val in row]
             regret_matrix.append(row_regrets)
-
-        max_regret_per_col = []
-        for j in range(num_cols):
-            col = [regret_matrix[i][j] for i in range(num_rows)]
-            max_regret_per_col.append(max(col))
+            
+        for i in range(len(payoffs[0])):
+            max_value = max(row[i] for row in regret_matrix)
+            max_regret_per_col.append(max_value)
 
         minimax_regret_action = max_regret_per_col.index(min(max_regret_per_col))
 
