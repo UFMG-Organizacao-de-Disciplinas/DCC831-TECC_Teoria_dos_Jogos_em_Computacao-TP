@@ -54,7 +54,7 @@ def draw_unique_players(strat_count: dict, alone_player: list[str] | None = None
     return player_sequence, alone_player
 
 
-def lets_play_the_game(game_num, players, game_name) -> tuple[int, int]:
+def lets_play_the_game(strat_count) -> tuple[int, int]:
     """ Function that runs the game for the players in the player_sequence
     Args:
         player_sequence (list): List of tuples with the players to play the game.
@@ -63,43 +63,42 @@ def lets_play_the_game(game_num, players, game_name) -> tuple[int, int]:
     Returns:
         tuple: Payoffs for player 1 and player 2.
     """
+    players = get_players(strat_count)
+    alone_player = None
+    (player_sequence, alone_player) = draw_unique_players(strat_count, alone_player)
+    
+    num_games = min(len(get_payoffs()), len(player_sequence))
+    
+    print(f'Class composition: {max(list(players.keys()))} students')
+    print()
+    for i, key in enumerate(strat_count):
+        total_players = sum(strat_count.values())
+        print(f'{key}: {strat_count[key]} players, approximately {strat_count[key] / total_players * 100:.2f}% of the class')
+    print('-' * 40)
+    for i in range(num_games):
+        
+        game_name = list(get_payoffs().keys())[i]
+        
+        # Assigning the label of each player to p1 and p2
+        p1 = player_sequence[i][0]
+        p2 = player_sequence[i][1]
 
-    for i in range(len(get_payoffs())):
-    # Assigning the label of each player to p1 and p2
-    p1 = player_sequence[game_num][0]
-    p2 = player_sequence[game_num][1]
+        # Run of the game for the players based on their strategies
+        action_1 = get_strategies()[players[p1]](game_name, 1)
+        action_2 = get_strategies()[players[p2]](game_name, 2)
 
-    # Run of the game for player 1 based on his strategy
-    action_1 = get_strategies()[players[p1]](game_name, 1)
-
-    # Run of the game for player 2 based on his strategy
-    action_2 = get_strategies()[players[p2]](game_name, 2)
-
-    # Payoff for player 1 at (action_1, action_2) profile
-    payoff_1 = get_payoffs(game_name)[1][action_1][action_2]
-
-    # Run of the game for player 2 based on his strategy
-    payoff_2 = get_payoffs(game_name)[2][action_1][action_2]
-
+        # Payoffs for the players at (action_1, action_2) profile
+        payoff_1 = get_payoffs(game_name)[1][action_1][action_2]
+        payoff_2 = get_payoffs(game_name)[2][action_1][action_2]
+        
+        # Print the results of the game
+        print(f'Game {i + 1}: {game_name}')
+        print(f'Players: {p1} vs {p2}')
+        print(f'Actions: {p1} -> {action_1}, {p2} -> {action_2}')
+        print(f'Payoffs: {p1} -> {payoff_1}, {p2} -> {payoff_2}')
+        print('-' * 40)
+        if i == len(get_payoffs()) - 1 and alone_player is not None:
+            print(f'Player left behind: {alone_player}')
+            
+        
     return (payoff_1, payoff_2)
-
-
-# Testing of the game (not necessarily in the final module)
-game_name = 'prisoners_dilemma'
-num_games = 1
-players = ['Rangel', 'João']
-strategies = {players[0]: 'maxmin', players[1]: 'maxmin'}
-
-# Testing of the game (not necessarily in the final module)
-# for i in range(num_games):
-player_sequence, alone_player = draw_unique_players(players, alone_player)
-game = get_payoffs(game_name)
-(Payoff_1, Payoff_2) = lets_play_the_game(
-    player_sequence, strategies, game_name)
-#print(f"Round {i+1}:")
-print("Player sequence:", player_sequence)
-print("Game played: ", game_name)
-print("Payoff for player 1: ", Payoff_1)
-print("Payoff for player 2: ", Payoff_2)
-print("Player left to the next round:", alone_player)
-print()
