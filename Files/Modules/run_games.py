@@ -117,6 +117,37 @@ def lets_play_the_game(hyperparams: dict, gen: int) -> tuple[int, int]:
     return payoff_summary
 
 
+def get_class_points(payoff_summary: dict) -> dict:
+    """ Function that receives the payoff summary and returns the class points
+    Args:
+        payoff_summary (dict): Dictionary with the payoffs for each game.
+    Returns:
+        class_points (dict): Dictionary with the class points for each player.
+    """
+
+    class_points = []
+
+    for row in payoff_summary:
+        # Each row is a dict like {p1: payoff_1, p2: payoff_2}
+        keys = list(row.keys())
+        if len(keys) == 2:
+            k1, k2 = keys
+            v1, v2 = row[k1], row[k2]
+            if v1 > v2:
+                class_points.append({k1: 2, k2: 0})
+            elif v2 > v1:
+                class_points.append({k1: 0, k2: 2})
+            else:
+                class_points.append({k1: 1, k2: 1})
+        else:
+            # Handle the case where there is only one player (alone)
+            k1 = keys[0]
+            class_points.append({k1: 1})
+
+    return class_points
+
+
+
 def gen_games(hyperparams: dict, gen: int) -> list:
     """ Function that runs the game for the players in the player_sequence
     Args:
@@ -128,7 +159,7 @@ def gen_games(hyperparams: dict, gen: int) -> list:
     general_summary = []
     for gen_i in range(1, gen + 1):
         print(f'Round {gen_i} of {gen}')
-        payoff_summary = lets_play_the_game(hyperparams, gen_i)
-        general_summary.append(payoff_summary)
+        class_points = get_class_points(lets_play_the_game(hyperparams, gen_i))
+        general_summary.append(class_points)
 
     return general_summary
