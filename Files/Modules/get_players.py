@@ -1,19 +1,19 @@
 """ Handling Players and strategies functions """
 
 
-def get_players(strat_count: dict[str, int]) -> dict[int, str]:
+def get_players(hyperparams: dict) -> dict[int, str]:
     """ Create a list of players based on the number of players per strategy.
 
     Args:
-        strat_count (dict[str, int]): The strategies and how many players have this strat
+        hyperparams (dict): The strategies and how many players have this strat
 
     Returns:
         players_strat_dict (dict[int, str]): A dict of all the players and their strategies names
     """
 
     strategies = []
-    for strategy in strat_count:
-        quantity = strat_count[strategy]
+    for strategy in hyperparams:
+        quantity = hyperparams[strategy]
         strategies += [strategy] * quantity
 
     players_strat_dict = {}
