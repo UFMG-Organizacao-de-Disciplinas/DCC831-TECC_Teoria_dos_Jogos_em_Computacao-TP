@@ -161,6 +161,72 @@ def strat_social_welfare(game_name: str, player: int) -> int:
 
     return social_welfare_action
 
+def strat_temptation(game_name: str, player: int) -> int:
+    """ Function receives as input the game name and the player label,
+        and returns the temptation strategy pure strategy
+
+    Args:
+        game_name (str): Name of the game played.
+        player (str): The player label, either 1 or 2.
+
+    Returns:
+        int: The index of the action that corresponds to the temptation strategy for the player.
+    """
+    
+    payoffs = get_payoffs(game_name)[player]
+
+    if player == 1:
+        # Analyzing which action contains the maxmin payoff
+        max_row = [max(action) for action in payoffs]
+        temptation_action = max_row.index(max(max_row))
+
+    else:
+       # Initializing the vector as empty
+        max_column = []
+
+        # Taking the min value from each column i and creating a vector of min per column
+        for i in range(len(payoffs[0])):
+            max_value = max(row[i] for row in payoffs)
+            max_column.append(max_value)
+
+        # Analyzing which action contains the maxmin payoff (p2)
+        for i in range(len(payoffs)):
+            highest_case = max(row[i] for row in payoffs)
+            if highest_case == max(max_column):
+                temptation_action = i
+
+    return temptation_action
+
+def nash_strat(game_name: str, player: int) -> int:
+    
+    """ Function receives as input the game name and the player label,
+        and returns the Nash equilibrium pure strategy
+
+    Args:
+        game_name (str): Name of the game played.
+        player (str): The player label, either 1 or 2.
+
+    Returns:
+        int: The index of the action that corresponds to the Nash equilibrium strategy for the player.
+    """
+    import numpy as np
+    import nashpy as nash
+
+    payoffs = get_payoffs(game_name)
+    game = nash.Game(np.array(payoffs[1]), np.array(payoffs[2]))
+    
+    nash_equilibria = list(game.support_enumeration())
+    
+    if not nash_equilibria:
+        return strat_social_welfare(game_name, player)
+    
+    pure_eqs = [eq for eq in game.support_enumeration() 
+            if (eq[0].sum() == 1 and eq[1].sum() == 1)]
+    
+    if not pure_eqs:
+        return strat_social_welfare(game_name, player)
+    
+    return int(np.argmax(pure_eqs[0][player - 1]))
 
 def get_strategies() -> dict:
     """ Get the strategies available for the games.
@@ -174,6 +240,8 @@ def get_strategies() -> dict:
         'maxmin': strat_maxmin,
         'minimax_regret': strat_minimax_regret,
         'social_welfare': strat_social_welfare,
+        'tempation': strat_temptation,
+        'pure_nash': nash_strat,
     }
 
     return strategies
