@@ -65,6 +65,8 @@ def lets_play_the_game(strat_count) -> tuple[int, int]:
     """
     players = get_players(strat_count)
     alone_player = None
+    payoff_summary = []
+    
     (player_sequence, alone_player) = draw_unique_players(strat_count, alone_player)
     
     num_games = min(len(get_payoffs()), len(player_sequence))
@@ -91,6 +93,9 @@ def lets_play_the_game(strat_count) -> tuple[int, int]:
         payoff_1 = get_payoffs(game_name)[1][action_1][action_2]
         payoff_2 = get_payoffs(game_name)[2][action_1][action_2]
         
+        # Collecting the games' summary
+        payoff_summary.append({p1: payoff_1, p2: payoff_2})
+        
         # Print the results of the game
         print(f'Game {i + 1}: {game_name}')
         print(f'Players: {p1} vs {p2}')
@@ -101,4 +106,4 @@ def lets_play_the_game(strat_count) -> tuple[int, int]:
             print(f'Player left behind: {alone_player}')
             
         
-    return (payoff_1, payoff_2)
+    return payoff_summary
