@@ -5,12 +5,7 @@ This module defines the global game parameters for the Benevolent Gaming scenari
 
 
 def setting_up_hyperparameters(
-        strat_count={
-            'minimax': 2,
-            'maxmin': 3,
-            'minimax_regret': 4,
-            'social_welfare': 5,
-        },
+        strat_count: dict[str, int],
         num_rounds: int = 10,
         initial_score: int = 0,
         participation_point: int = 1) -> dict[str, int]:
