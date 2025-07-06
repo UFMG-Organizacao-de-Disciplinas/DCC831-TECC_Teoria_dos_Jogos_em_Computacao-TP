@@ -240,8 +240,8 @@ def get_strategies() -> dict:
         'maxmin': strat_maxmin,
         'minimax_regret': strat_minimax_regret,
         'social_welfare': strat_social_welfare,
-        'tempation': strat_temptation,
-        'pure_nash': nash_strat,
+        'temptation': strat_temptation,
+        'pure_nash': nash_strat
     }
 
     return strategies

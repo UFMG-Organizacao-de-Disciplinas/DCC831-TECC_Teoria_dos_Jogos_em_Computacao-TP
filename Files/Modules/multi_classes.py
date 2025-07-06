@@ -98,8 +98,10 @@ def main():
     
     num_rounds = 1000
     
+    
     games = get_payoffs()
     gaming_parameters = setting_up_hyperparameters()
+    
     for game_class in game_theory_classes:
         
         players = get_players(game_class)
@@ -110,7 +112,9 @@ def main():
             results,
             gaming_parameters
         )
-        
+ 
+strategies = get_strategies()
+strategies       
 main()
 
         
