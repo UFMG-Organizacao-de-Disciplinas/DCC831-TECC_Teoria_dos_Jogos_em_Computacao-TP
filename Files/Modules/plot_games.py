@@ -1,48 +1,165 @@
-""" Plotting Results of Games
-This module provides functionality to plot the results of games played between two players.
-It takes a list of game results, where each result is a dictionary containing game details
-"""
+""" Running games and plotting results """
 
 
-from .get_payoffs import get_payoffs
-
+import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 
-def plot_gamepoints_line_graph_progression(plotting_data):
+def preprocess_data(
+        games,
+        players: dict[int, str],
+        results: list[dict[int, float]],
+        hyperparams: dict[str, int | dict[str, int]]) -> pd.DataFrame:
+    """ Converts the results of the games into a Pandas DataFrame of their accumulated scores.
+    Args:
+        games (dict): Dictionary containing game names and their details.
+        players (dict[int, str]): Dictionary mapping player IDs to their strategies.
+        results (list[dict[int, float]]): List of game results, where each result
+            is a dictionary containing player IDs and their scores.
+        hyperparams (dict[str, int | dict[str, int]]): Dictionary containing hyperparameters
+
+    Returns:
+        pd.DataFrame: A DataFrame with the accumulated scores of players across games.
+    """
+
+    pd.set_option('display.expand_frame_repr', False)
+
+    rows_size = min(len(results), len(games)) + 1  # +1 for the initial row
+
+    # Create an zeroed DataFrame
+    headers = list(players.keys())
+    df = pd.DataFrame(0.0, columns=headers, index=range(rows_size))
+
+    # Fill first row with initial values
+    df.loc[0, headers] = [hyperparams['initial_score']] * len(headers)
+    # print(df)
+
+    # Distribute the results across the DataFrame
+    for i, game_result in enumerate(results, 1):
+        # print(i, game_result)
+        for player_id, score in game_result.items():
+            new_score = score + hyperparams['participation_point']
+            # print(new_score)
+            df.at[i, player_id] = new_score
+    # print(df)
+
+    # Sum the accumulated values for each player, only if the columns are numeric
+    df = df.cumsum()
+
+    # print(df)
+
+    # Adding the games column
+    games_column = list(games.keys())[:rows_size-1]
+    df.insert(0, 'game', ['initial scores'] + games_column)
+    # print(df)
+
+    return df
+
+
+def generate_strategy_colors(
+    players: dict[int, str],
+    strategy_palette_map: dict[str, str]
+) -> dict[int, str]:
+    """ Generates a color map for players based on their strategies.
+
+    Args:
+        players (dict[int, str]): Dictionary mapping player IDs to their strategies.
+        strategy_palette_map (dict[str, str]): Dictionary mapping strategies to matplotlib
+            colormaps.
+
+    Returns:
+        dict[int, str]: A dictionary mapping player IDs to their corresponding colors.
+    """
+
+    # Group players by their strategies
+    grouped = {}
+    for player_id, strategy in players.items():
+        if strategy not in grouped:
+            grouped[strategy] = []
+        grouped[strategy].append(player_id)
+
+    color_map = {}
+    for strategy, player_ids in grouped.items():
+        base_cmap = plt.colormaps[strategy_palette_map[strategy]]
+
+        # Avoids very light tones: uses a range from 0.3 to 1.0
+        color_positions = np.linspace(0.3, 1.0, len(player_ids))
+
+        for i, pid in enumerate(player_ids):
+            rgb = base_cmap(color_positions[i])
+            color_map[pid] = mcolors.to_hex(rgb)
+
+    return color_map
+
+
+def plot_gamepoints_line_graph_progression(pre_processed_dataframe: pd.DataFrame, players: dict[int, str]) -> None:
     """
     Desejo fazer um gráfico em python onde vários jogadores com estratégias
     diferentes vão ganhando pontos ao longo do tempo.
     Cada jogador tem uma estratégia diferente, e os jogadores com mesma
     estratégia devem estar coloridos com a mesma cor.
     """
-    games = plotting_data['games']
-    strategies = plotting_data['strategies']
-    players = plotting_data['players']
-    results = plotting_data['results']
+
+    # print(pre_processed_dataframe)
+    # print(100*"-")
+    # print(players)
+
+    # print(len(pre_processed_dataframe))
+    # X should vary from 0 to the quantity of games + 1 (initial row); X labels should be the game names
+    # get all the game names at the df rows
+    x_game_labels = pre_processed_dataframe['game'].values
+
+    # The stacked data should be the game points for each player in the dataframe
+    numeric_df = pre_processed_dataframe.drop(columns='game')
+    y_payoffs = numeric_df.T.values
+
+    # Coloring
+    player_ids = players.keys()
+    strategy_palette_map = {
+        'minimax': 'Purples',
+        'maxmin': 'Oranges',
+        'minimax_regret': 'Blues',
+        'social_welfare': 'Greens',
+    }
+
+    player_colors = generate_strategy_colors(players, strategy_palette_map)
+    color_list = [player_colors[pid] for pid in player_ids]
 
     plt.style.use('_mpl-gallery')
+    fig, ax = plt.subplots(figsize=(10, 6))
 
-    # make data
-    x = np.arange(0, 10, 2)
-    ay = [1, 1.25, 2, 2.75, 3]
-    by = [1, 1, 1, 1, 1]
-    cy = [2, 1, 2, 1, 2]
-    y = np.vstack([ay, by, cy])
+    x_labeless = np.arange(len(x_game_labels))  # X values for the x-axis
+    ax.stackplot(x_labeless, y_payoffs, colors=color_list, labels=[
+                 f'{pid}: {players[pid]}' for pid in player_ids])
 
-    # plot
-    fig, ax = plt.subplots()
+    ax.set(
+        title='Game Points Progression',
+        xlabel='Games',
+        xlim=(x_labeless[0], x_labeless[-1]),
+        xticks=x_labeless,
+        xticklabels=x_game_labels,
 
-    ax.stackplot(x, y)
+        ylim=(0, np.max(y_payoffs.sum(axis=0)) + 1),
+        # yticks=np.arange(0, np.max(y_payoffs.sum(axis=0)) + 2)
+        ylabel='Game Points',
+    )
 
-    ax.set(xlim=(0, 8), xticks=np.arange(1, 8),
-           ylim=(0, 8), yticks=np.arange(1, 8))
+    # Estética
+    ax.legend(loc='upper left')
+    plt.xticks(rotation=45, ha='right')  # <-- rotaciona os nomes dos jogos
+    plt.tight_layout()
 
     plt.show()
 
 
-def plot_games(games=None, strategies=None, players: list[tuple[int, int]] = None, results: list[tuple[int, int]] = None) -> None:
+def plot_games(
+    games,
+    players: dict[int, str],
+    results: list[list[dict[int, float]]],
+    hyperparams: dict[str, int | dict[str, int]],
+) -> None:
     """ Plot the results of the games
 
     Args:
@@ -53,36 +170,8 @@ def plot_games(games=None, strategies=None, players: list[tuple[int, int]] = Non
         None: This function does not return anything; it is intended to
             display the results visually.
     """
-    default_players = [(1, 2), (3, 4), (5, 6), (7, 8),
-                       (8, 7), (6, 5), (4, 3), (2, 1)]
-    default_results = [(0, 1), (2, 1), (3, 4), (5, 4),
-                       (4, 3), (2, 1), (1, 0), (0, 1)]
-    default_strategies = {
-        1: 'minimax_regret',
-        2: 'maxmin',
-        3: 'maxmin',
-        4: 'maxmin',
-        5: 'minimax',
-        6: 'social_welfare',
-        7: 'minimax',
-        8: 'minimax_regret',
-        # 9: 'social_welfare',
-        # 10: 'minimax_regret',
-        # 11: 'social_welfare',
-        # 12: 'social_welfare',
-        # 13: 'social_welfare',
-        # 14: 'minimax_regret'
-    }
-    default_game_names = get_payoffs().keys()
-
-    plotting_data = {
-        'players': players if players else default_players,
-        'results': results if results else default_results,
-        'strategies': strategies if strategies else default_strategies,
-        'games': games if games else default_game_names
-    }
-
-    plot_gamepoints_line_graph_progression(plotting_data)
-
-
-# plot_games()
+    for gen_result in results:
+        pre_processed_dataframe = preprocess_data(
+            games, players, gen_result, hyperparams)
+        plot_gamepoints_line_graph_progression(
+            pre_processed_dataframe, games, players)
