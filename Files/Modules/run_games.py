@@ -5,11 +5,11 @@ if the number of players is odd, one player is left to play alone.
 It uses the `random` module to shuffle the player list and create pairs.
 """
 
-from .get_payoffs import get_payoffs
-from .get_players import get_players
-from .get_strategies import get_strategies
+from Modules.get_payoffs import get_payoffs
+from Modules.get_players import get_players
+from Modules.get_strategies import get_strategies
 
-def draw_unique_players(strat_count: dict, alone_player: list[str] | None = None) -> list:
+def draw_unique_players(hyperparams: dict, gen: int, alone_player: list[str] | None = None) -> list:
     """ Function receives as input the player list, and returns the list of players
     per game ordering
 
@@ -25,8 +25,10 @@ def draw_unique_players(strat_count: dict, alone_player: list[str] | None = None
     """
 
     import random
+    
+    random.seed(gen)  # For reproducibility, can be removed in production
     # Copying the players list so it will not be modified
-    players_left = list(get_players(strat_count).keys()).copy()
+    players_left = list(get_players(hyperparams).keys()).copy()
     # Shuffling the players_left list to be drawn
     random.shuffle(players_left)
     # Defining as empty the player sequence
@@ -54,7 +56,7 @@ def draw_unique_players(strat_count: dict, alone_player: list[str] | None = None
     return player_sequence, alone_player
 
 
-def lets_play_the_game(strat_count) -> tuple[int, int]:
+def lets_play_the_game(hyperparams: dict, gen: int) -> tuple[int, int]:
     """ Function that runs the game for the players in the player_sequence
     Args:
         player_sequence (list): List of tuples with the players to play the game.
@@ -63,19 +65,19 @@ def lets_play_the_game(strat_count) -> tuple[int, int]:
     Returns:
         tuple: Payoffs for player 1 and player 2.
     """
-    players = get_players(strat_count)
+    players = get_players(hyperparams)
     alone_player = None
     payoff_summary = []
     
-    (player_sequence, alone_player) = draw_unique_players(strat_count, alone_player)
+    (player_sequence, alone_player) = draw_unique_players(hyperparams, alone_player)
     
     num_games = min(len(get_payoffs()), len(player_sequence))
     
     print(f'Class composition: {max(list(players.keys()))} students')
     print()
-    for i, key in enumerate(strat_count):
-        total_players = sum(strat_count.values())
-        print(f'{key}: {strat_count[key]} players, approximately {strat_count[key] / total_players * 100:.2f}% of the class')
+    for i, key in enumerate(hyperparams):
+        total_players = sum(hyperparams.values())
+        print(f'{key}: {hyperparams[key]} players, approximately {hyperparams[key] / total_players * 100:.2f}% of the class')
     print('-' * 40)
     for i in range(num_games):
         
@@ -107,3 +109,20 @@ def lets_play_the_game(strat_count) -> tuple[int, int]:
             
         
     return payoff_summary
+
+
+def gen_games(hyperparams: dict, gen: int) -> list:
+    """ Function that runs the game for the players in the player_sequence
+    Args:
+        hyperparams (dict): Dictionary with the strategies of each player.
+        gen (int): Number of rounds to play.
+    Returns:
+        list: List of tuples with the payoffs for each game.
+    """
+    general_summary = []
+    for gen_i in range(1, gen + 1):
+        print(f'Round {gen_i} of {gen}')
+        payoff_summary = lets_play_the_game(hyperparams, gen_i)
+        general_summary.append(payoff_summary)
+        
+    return general_summary
