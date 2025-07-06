@@ -1,40 +1,28 @@
 """ Handling Players and strategies functions """
 
-import random
 
-
-def get_players(strat_count: dict[str, int]) -> dict:
+def get_players(strat_count: dict[str, int]) -> dict[int, str]:
     """ Create a list of players based on the number of players per strategy.
 
     Args:
-        strat_count (dict): The number of players per strategy.
+        strat_count (dict[str, int]): The strategies and how many players have this strat
 
     Returns:
-        list: A list of player identifiers in the format 'p1', 'p2',
+        players_strat_dict (dict[int, str]): A dict of all the players and their strategies names
     """
 
-    # Initializing some variables
-    num_players = 0
-    num_strategy = 0
-    cummulative_players = []
-    player_strat = {}
-    players = []
+    strategies = []
+    for strategy in strat_count:
+        quantity = strat_count[strategy]
+        strategies += [strategy] * quantity
 
-    # Creating a list of players based on the number of players per strategy
-    for count in list(strat_count.values()):
-        num_players += count
-        cummulative_players.append(num_players)
-    players = list(range(1, num_players + 1))
+    players_strat_dict = {}
 
-    # Assigning strategies to players based on the cumulative counts
-    for i in range(1, num_players + 1):
-        if i > cummulative_players[num_strategy]:
-            num_strategy += 1
-        player_strat[i] = list(strat_count.keys())[num_strategy]
+    for i, strategy in enumerate(strategies):
+        players_strat_dict[i+1] = strategy
 
-    # Randomizing the order of strategies for players
-    values = list(player_strat.values())
-    random.shuffle(values)
-    players = dict(zip(player_strat.keys(), values))
+    return players_strat_dict
 
-    return players
+
+# print(get_players({'minimax': 2, 'maxmin': 3,
+#       'minimax_regret': 4, 'social_welfare': 5}))
