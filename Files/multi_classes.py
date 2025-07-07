@@ -12,6 +12,8 @@ from Modules.run_games import draw_unique_players
 from Modules.run_games import lets_play_the_game
 from Modules.plot_games import plot_games
 
+
+
 def main():
     game_theory_classes = [
        {
@@ -96,12 +98,15 @@ def main():
         },
     ]
     
+
+
+
     num_rounds = 1000
-    
-    
+
+
     games = get_payoffs()
     gaming_parameters = setting_up_hyperparameters()
-    
+    strategies = get_strategies()
     for game_class in game_theory_classes:
         
         players = get_players(game_class)
@@ -113,8 +118,7 @@ def main():
             gaming_parameters
         )
  
-strategies = get_strategies()
-strategies       
+  
 main()
 
         
