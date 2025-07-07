@@ -113,24 +113,23 @@ def generate_strategy_colors(
     return color_map
 
 
-def plot_gamepoints_line_graph_progression(
+def plot_gamepoints_stackline_graph_progression(
         pre_processed_dataframe: pd.DataFrame,
         players: dict[int, str],
         strategies: list[str]
 ) -> None:
+    """ Plot the game points progression as a stacked line graph.
+    Args:
+        pre_processed_dataframe (pd.DataFrame): DataFrame containing game points data.
+        players (dict[int, str]): Dictionary mapping player IDs to their strategies.
+        strategies (list[str]): List of strategies used by the players.
+    Returns:
+        None: This function does not return anything; it is intended to
+            display the results visually.
     """
-    Desejo fazer um gráfico em python onde vários jogadores com estratégias
-    diferentes vão ganhando pontos ao longo do tempo.
-    Cada jogador tem uma estratégia diferente, e os jogadores com mesma
-    estratégia devem estar coloridos com a mesma cor.
-    """
-
-    # print(pre_processed_dataframe)
-    # print(100*"-")
-    # print(players)
 
     # print(len(pre_processed_dataframe))
-    # X should vary from 0 to the quantity of games + 1 (initial row); X labels should be the game names
+    # X labels should be the game names
     # get all the game names at the df rows
     x_game_labels = pre_processed_dataframe['game'].values
 
@@ -169,11 +168,54 @@ def plot_gamepoints_line_graph_progression(
         ylabel='Game Points',
     )
 
-    # Estética
+    # Styling
     ax.legend(loc='upper left')
-    plt.xticks(rotation=45, ha='right')  # <-- rotaciona os nomes dos jogos
+    plt.xticks(rotation=45, ha='right')  # Rotates the game names
     plt.tight_layout()
 
+    plt.show()
+
+
+def plot_gamepoints_line_graph_progression(
+        pre_processed_dataframe: pd.DataFrame,
+        players: dict[int, str],
+        strategies: list[str]
+) -> None:
+    """ Plot the game points progression as a line graph.
+    Args:
+        pre_processed_dataframe (pd.DataFrame): DataFrame containing game points data.
+        players (dict[int, str]): Dictionary mapping player IDs to their strategies.
+        strategies (list[str]): List of strategies used by the players.
+    Returns:
+        None: This function does not return anything; it is intended to
+            display the results visually.
+    """
+
+    x_labels = pre_processed_dataframe['game'].values
+    numeric_df = pre_processed_dataframe.drop(columns='game')
+    player_ids = list(map(int, numeric_df.columns))
+    y_data = numeric_df.values.T
+
+    colors = get_colors()
+    strat_palette = {s: colors.pop(0) for s in strategies}
+    player_colors = generate_strategy_colors(players, strat_palette)
+    color_list = [player_colors[pid] for pid in player_ids]
+    labels = [f'{pid}: {players[pid]}' for pid in player_ids]
+
+    plt.style.use('_mpl-gallery')
+    fig, ax = plt.subplots(figsize=(10, 6))
+    x = np.arange(len(x_labels))
+
+    for i, y in enumerate(y_data):
+        ax.plot(x, y, label=labels[i], color=color_list[i])
+
+    ax.set(title='Game Points Progression', xlabel='Games', ylabel='Game Points',
+           xlim=(x[0], x[-1]), xticks=x, xticklabels=x_labels,
+           ylim=(0, np.max(y_data) + 1))
+
+    plt.xticks(rotation=45, ha='right')
+    ax.legend(loc='best', fontsize='small', ncol=2)
+    plt.tight_layout()
     plt.show()
 
 
@@ -197,5 +239,7 @@ def plot_games(
     for gen_result in results:
         pre_processed_dataframe = preprocess_data(
             games, players, gen_result, hyperparams)
-        plot_gamepoints_line_graph_progression(
+        plot_gamepoints_stackline_graph_progression(
             pre_processed_dataframe, players, strategies)
+        # plot_gamepoints_line_graph_progression(
+        #     pre_processed_dataframe, players, strategies)
