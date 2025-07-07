@@ -101,7 +101,7 @@ def main():
 
 
 
-    num_rounds = 1000
+    num_rounds = 10
 
 
     games = get_payoffs()
