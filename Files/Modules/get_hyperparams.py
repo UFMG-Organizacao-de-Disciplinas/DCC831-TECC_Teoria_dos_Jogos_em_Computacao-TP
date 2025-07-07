@@ -13,19 +13,21 @@ def setting_up_hyperparameters(
             'temptation': 4,
             'pure_nash': 4
         },
+        strat_count: dict[str, int] | None = None,
         num_rounds: int = 10,
         initial_score: float = 0.1,
-        participation_point: float = 1.0) -> dict[str, int]:
+        participation_point: float = 1.0) -> dict[str, dict[str, int] | int | float]:
     """ Defining the global game parameters
 
     Args:
-        strat_count (dict): Number of players in class per strategy.
+        strat_count (dict[str, int]): Number of players in class per strategy.
         num_rounds (int): Number of rounds in the game.
-        initial_score (int): Initial score for each player.
-        participation_point (int): Points awarded for participating in the game.
+        initial_score (float): Initial score for each player.
+        participation_point (float): Points awarded for participating in the game.
 
     Returns:
-        dict: A dictionary containing the game parameters.
+        Gaming parameters (dict[str, dict[str, int] | int | float]): A dictionary containing
+            the game parameters.
             1. `strat_count`: Number of players in class per strategy.
             2. `num_rounds`: Number of rounds in the game.
             3. `initial_score`: Initial score for each player.
