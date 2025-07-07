@@ -91,7 +91,6 @@ def strat_minimax_regret(game_name: str, player: int) -> int:
 
     payoffs = get_payoffs(game_name)[player]
 
-
     if player == 1:
         # Initializing the vectors as empty
         max_column = []
@@ -109,7 +108,7 @@ def strat_minimax_regret(game_name: str, player: int) -> int:
         # Analyzing which action minimizes the regret
         max_regret = [max(action) for action in regret_matrix]
         minimax_regret_action = max_regret.index(min(max_regret))
-        
+
     else:
         num_rows = len(payoffs)
 
@@ -121,12 +120,13 @@ def strat_minimax_regret(game_name: str, player: int) -> int:
             row_max = max(row)
             row_regrets = [row_max - val for val in row]
             regret_matrix.append(row_regrets)
-            
+
         for i in range(len(payoffs[0])):
             max_value = max(row[i] for row in regret_matrix)
             max_regret_per_col.append(max_value)
 
-        minimax_regret_action = max_regret_per_col.index(min(max_regret_per_col))
+        minimax_regret_action = max_regret_per_col.index(
+            min(max_regret_per_col))
 
     return minimax_regret_action
 
@@ -161,6 +161,7 @@ def strat_social_welfare(game_name: str, player: int) -> int:
 
     return social_welfare_action
 
+
 def strat_temptation(game_name: str, player: int) -> int:
     """ Function receives as input the game name and the player label,
         and returns the temptation strategy pure strategy
@@ -172,7 +173,7 @@ def strat_temptation(game_name: str, player: int) -> int:
     Returns:
         int: The index of the action that corresponds to the temptation strategy for the player.
     """
-    
+
     payoffs = get_payoffs(game_name)[player]
 
     if player == 1:
@@ -197,8 +198,8 @@ def strat_temptation(game_name: str, player: int) -> int:
 
     return temptation_action
 
+
 def nash_strat(game_name: str, player: int) -> int:
-    
     """ Function receives as input the game name and the player label,
         and returns the Nash equilibrium pure strategy
 
@@ -214,19 +215,20 @@ def nash_strat(game_name: str, player: int) -> int:
 
     payoffs = get_payoffs(game_name)
     game = nash.Game(np.array(payoffs[1]), np.array(payoffs[2]))
-    
+
     nash_equilibria = list(game.support_enumeration())
-    
+
     if not nash_equilibria:
         return strat_social_welfare(game_name, player)
-    
-    pure_eqs = [eq for eq in game.support_enumeration() 
-            if (eq[0].sum() == 1 and eq[1].sum() == 1)]
-    
+
+    pure_eqs = [eq for eq in game.support_enumeration()
+                if (eq[0].sum() == 1 and eq[1].sum() == 1)]
+
     if not pure_eqs:
         return strat_social_welfare(game_name, player)
-    
+
     return int(np.argmax(pure_eqs[0][player - 1]))
+
 
 def get_strategies() -> dict:
     """ Get the strategies available for the games.

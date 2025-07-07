@@ -94,7 +94,11 @@ def generate_strategy_colors(
     return color_map
 
 
-def plot_gamepoints_line_graph_progression(pre_processed_dataframe: pd.DataFrame, players: dict[int, str]) -> None:
+def plot_gamepoints_line_graph_progression(
+        pre_processed_dataframe: pd.DataFrame,
+        players: dict[int, str],
+        strategies: list[str]
+) -> None:
     """
     Desejo fazer um gráfico em python onde vários jogadores com estratégias
     diferentes vão ganhando pontos ao longo do tempo.
@@ -117,12 +121,23 @@ def plot_gamepoints_line_graph_progression(pre_processed_dataframe: pd.DataFrame
 
     # Coloring
     player_ids = players.keys()
-    strategy_palette_map = {
-        'minimax': 'Purples',
-        'maxmin': 'Oranges',
-        'minimax_regret': 'Blues',
-        'social_welfare': 'Greens',
-    }
+
+    strategy_palette_map = {}
+    colors = [
+        'Accent', 'Blues', 'Grays', 'Greens', 'Oranges', 'Purples',
+        'Spectral', 'Spectral_r', 'Wistia', 'Wistia_r', 'cividis',
+        'cividis_r', 'cool', 'coolwarm', 'copper', 'cubehelix', 'flag',
+        'gist_earth', 'gist_gray', 'gist_grey', 'gist_heat', 'gist_ncar',
+        'gist_stern', 'gist_yarg', 'gist_yerg', 'gnuplot',
+        'gnuplot2', 'gray', 'grey', 'hot', 'hsv', 'inferno',
+        'jet', 'magma', 'managua', 'nipy_spectral', 'ocean',
+        'pink', 'plasma', 'prism', 'rainbow', 'seismic', 'spring',
+        'summer', 'tab10', 'tab20', 'tab20b', 'tab20c', 'terrain',
+        'turbo', 'twilight', 'twilight_shifted', 'vanimo', 'viridis', 'winter'
+    ]
+    for strategy in strategies:
+        strategy_palette_map[strategy] = colors.pop(0)
+        # Pop the first color from the list
 
     player_colors = generate_strategy_colors(players, strategy_palette_map)
     color_list = [player_colors[pid] for pid in player_ids]
@@ -159,6 +174,7 @@ def plot_games(
     players: dict[int, str],
     results: list[list[dict[int, float]]],
     hyperparams: dict[str, int | dict[str, int]],
+    strategies: list[str],
 ) -> None:
     """ Plot the results of the games
 
@@ -174,4 +190,4 @@ def plot_games(
         pre_processed_dataframe = preprocess_data(
             games, players, gen_result, hyperparams)
         plot_gamepoints_line_graph_progression(
-            pre_processed_dataframe, players)
+            pre_processed_dataframe, players, strategies)
