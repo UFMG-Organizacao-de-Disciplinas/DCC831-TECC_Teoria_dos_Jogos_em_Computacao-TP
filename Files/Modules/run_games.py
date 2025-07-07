@@ -160,8 +160,10 @@ def gen_games(strat_count: dict[str, int], generations: int) -> list[tuple[int, 
     for gen_i in range(1, generations + 1):
         print(f'Round {gen_i} of {generations}')
         game_output = lets_play_the_game(strat_count, gen_i)
-        class_points = get_class_points(game_output)
-        general_summary.append(class_points)
+        general_summary.append(game_output)
+        # Let the game points explode.
+        # class_points = get_class_points(game_output)
+        # general_summary.append(class_points)
 
     return general_summary
 
@@ -179,14 +181,12 @@ def final_results(general_summary, game_names):
         for name in game_names
     }
 
-
     for rodada in general_summary:
 
         for name, dict_game in zip(game_names, rodada):
 
             for player, payoff in dict_game.items():
                 final_results[name][player].append(float(payoff))
-
 
     return {
         name: dict(history)
