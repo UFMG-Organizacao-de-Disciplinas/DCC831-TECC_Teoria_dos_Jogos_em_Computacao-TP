@@ -174,4 +174,4 @@ def plot_games(
         pre_processed_dataframe = preprocess_data(
             games, players, gen_result, hyperparams)
         plot_gamepoints_line_graph_progression(
-            pre_processed_dataframe, games, players)
+            pre_processed_dataframe, players)
