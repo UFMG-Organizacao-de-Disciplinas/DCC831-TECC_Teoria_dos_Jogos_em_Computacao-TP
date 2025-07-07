@@ -3,7 +3,7 @@ from Modules.get_payoffs import get_payoffs
 from Modules.get_players import get_players
 from Modules.get_strategies import get_strategies
 from Modules.run_games import gen_games
-from Modules.run_games import agrega_resultados
+from Modules.run_games import final_results
 from Modules.plot_games import plot_games
 
 
@@ -44,7 +44,7 @@ def main():
 
         players = get_players(game_class)
         results = gen_games(game_class, gaming_parameters['num_rounds'])
-        merged_results = agrega_resultados(results, list(payoffs.keys()))
+        merged_results = final_results(results, list(payoffs.keys()))
         agregated_results_per_game.append(merged_results)
         # print(agregated_results_per_game)
         plot_games(

@@ -166,30 +166,29 @@ def gen_games(strat_count: dict[str, int], generations: int) -> list[tuple[int, 
     return general_summary
 
 
-def agrega_resultados(lista_de_jogos, nomes_dos_jogos):
+def final_results(general_summary, game_names):
+    """ Function that aggregates the results of the games played in a dictionary
+    Args:
+        general_summary (list): List of dictionaries with the payoffs for each game.
+        game_names (list): List of game names.
+    Returns:
+        final_results (dict): Dictionary with the aggregated results of the games.
     """
-    lista_de_jogos: [jogos_1, jogos_2, ..., jogos_n]
-        onde cada jogos_i é uma lista de dicionários, um dicionário por jogo.
-    nomes_dos_jogos: ['dilema_prisioneiros', 'hawk dove', ...] — 
-        mesmo comprimento de cada jogos_i.
-    Retorna um dict no formato desejado.
-    """
-    # inicializa estrutura vazia
-    resultado_final = {
-        nome: defaultdict(list)
-        for nome in nomes_dos_jogos
+    final_results = {
+        name: defaultdict(list)
+        for name in game_names
     }
 
-    # percorre cada rodada (índice i)
-    for rodada in lista_de_jogos:
-        # para cada jogo na rodada, associa ao nome
-        for nome, dict_jogo in zip(nomes_dos_jogos, rodada):
-            # para cada jogador e payoff, apenda ao histórico
-            for jogador, payoff in dict_jogo.items():
-                resultado_final[nome][jogador].append(float(payoff))
 
-    # converte os defaultdicts de volta para dicts normais
+    for rodada in general_summary:
+
+        for name, dict_game in zip(game_names, rodada):
+
+            for player, payoff in dict_game.items():
+                final_results[name][player].append(float(payoff))
+
+
     return {
-        nome: dict(histórico)
-        for nome, histórico in resultado_final.items()
+        name: dict(history)
+        for name, history in final_results.items()
     }
