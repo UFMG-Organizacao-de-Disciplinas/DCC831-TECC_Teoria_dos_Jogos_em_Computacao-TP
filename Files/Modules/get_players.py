@@ -24,4 +24,4 @@ def get_players(strat_count: dict) -> dict[int, str]:
     return players_strat_dict
 
 
-# print(get_players({'minimax': 2, 'maxmin': 3, 'minimax_regret': 4, 'social_welfare': 5}))
+# print(get_players({'minimax': 2, 'maxmin': 3, 'minimax_regret': 4, 'social_welfare': 5})) # Debugging example
