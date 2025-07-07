@@ -5,6 +5,7 @@ if the number of players is odd, one player is left to play alone.
 It uses the `random` module to shuffle the player list and create pairs.
 """
 
+from collections import defaultdict
 from Modules.get_payoffs import get_payoffs
 from Modules.get_players import get_players
 from Modules.get_strategies import get_strategies
@@ -117,7 +118,7 @@ def lets_play_the_game(hyperparams: dict, gen: int) -> tuple[int, int]:
     return payoff_summary
 
 
-def get_class_points(payoff_summary: dict) -> dict:
+def get_class_points(payoff_summary: dict[int, int]) -> list[dict[str, int]]:
     """ Function that receives the payoff summary and returns the class points
     Args:
         payoff_summary (dict): Dictionary with the payoffs for each game.
@@ -147,25 +148,23 @@ def get_class_points(payoff_summary: dict) -> dict:
     return class_points
 
 
-
-def gen_games(hyperparams: dict, gen: int) -> list:
+def gen_games(strat_count: dict[str, int], generations: int) -> list[tuple[int, int]]:
     """ Function that runs the game for the players in the player_sequence
     Args:
-        hyperparams (dict): Dictionary with the strategies of each player.
-        gen (int): Number of rounds to play.
+        hyperparams (dict[str, int]): Dictionary with the strategies of each player.
+        generations (int): Number of rounds to play.
     Returns:
-        list: List of tuples with the payoffs for each game.
+        game_results (list[tuple[int, int]]): List of tuples with the payoffs for each game.
     """
     general_summary = []
-    for gen_i in range(1, gen + 1):
-        print(f'Round {gen_i} of {gen}')
-        class_points = get_class_points(lets_play_the_game(hyperparams, gen_i))
+    for gen_i in range(1, generations + 1):
+        print(f'Round {gen_i} of {generations}')
+        game_output = lets_play_the_game(strat_count, gen_i)
+        class_points = get_class_points(game_output)
         general_summary.append(class_points)
 
     return general_summary
 
-
-from collections import defaultdict
 
 def agrega_resultados(lista_de_jogos, nomes_dos_jogos):
     """
@@ -188,7 +187,7 @@ def agrega_resultados(lista_de_jogos, nomes_dos_jogos):
             # para cada jogador e payoff, apenda ao histórico
             for jogador, payoff in dict_jogo.items():
                 resultado_final[nome][jogador].append(float(payoff))
-    
+
     # converte os defaultdicts de volta para dicts normais
     return {
         nome: dict(histórico)
