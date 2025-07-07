@@ -10,6 +10,7 @@ from Modules.run_games import gen_games
 from Modules.run_games import get_class_points
 from Modules.run_games import draw_unique_players
 from Modules.run_games import lets_play_the_game
+from Modules.run_games import agrega_resultados
 from Modules.plot_games import plot_games
 
 
@@ -101,8 +102,8 @@ def main():
 
 
 
-    num_rounds = 10
-
+    num_rounds = 1
+    agregated_results_per_game = []
 
     games = get_payoffs()
     gaming_parameters = setting_up_hyperparameters()
@@ -111,6 +112,8 @@ def main():
         
         players = get_players(game_class)
         results = gen_games(game_class, num_rounds)
+        agregated_results_per_game.append(agrega_resultados(results, list(games.keys())))
+        print(agregated_results_per_game)
         plot_games(
             games,
             players,
@@ -119,12 +122,11 @@ def main():
             list(strategies.keys())
         )
  
-  
+
 main()
 
         
 
-        
 
         
     
