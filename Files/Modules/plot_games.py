@@ -1,61 +1,80 @@
 """ Running games and plotting results """
 
-
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
 
-def preprocess_data(
-        games,
-        players: dict[int, str],
-        results: list[dict[int, float]],
-        hyperparams: dict[str, int | dict[str, int]]) -> pd.DataFrame:
-    """ Converts the results of the games into a Pandas DataFrame of their accumulated scores.
-    Args:
-        games (dict): Dictionary containing game names and their details.
-        players (dict[int, str]): Dictionary mapping player IDs to their strategies.
-        results (list[dict[int, float]]): List of game results, where each result
-            is a dictionary containing player IDs and their scores.
-        hyperparams (dict[str, int | dict[str, int]]): Dictionary containing hyperparameters
+from .gaming_math import preprocess_data
+
+
+def get_colors() -> list[str]:
+    """ Returns a list of color names from matplotlib colormaps.
 
     Returns:
-        pd.DataFrame: A DataFrame with the accumulated scores of players across games.
+        colors (list[str]): A list of color names that can be used for plotting.
     """
-
-    pd.set_option('display.expand_frame_repr', False)
-
-    rows_size = min(len(results), len(games)) + 1  # +1 for the initial row
-
-    # Create an zeroed DataFrame
-    headers = list(players.keys())
-    df = pd.DataFrame(0.0, columns=headers, index=range(rows_size))
-
-    # Fill first row with initial values
-    df.loc[0, headers] = [hyperparams['initial_score']] * len(headers)
-    # print(df)
-
-    # Distribute the results across the DataFrame
-    for i, game_result in enumerate(results, 1):
-        # print(i, game_result)
-        for player_id, score in game_result.items():
-            new_score = score + hyperparams['participation_point']
-            # print(new_score)
-            df.at[i, player_id] = new_score
-    # print(df)
-
-    # Sum the accumulated values for each player, only if the columns are numeric
-    df = df.cumsum()
-
-    # print(df)
-
-    # Adding the games column
-    games_column = list(games.keys())[:rows_size-1]
-    df.insert(0, 'game', ['initial scores'] + games_column)
-    # print(df)
-
-    return df
+    colors = [
+        'Blues',
+        'Grays',
+        'Greens',
+        'Greys',
+        'Oranges',
+        'Purples',
+        'Reds',
+        'cividis',
+        'viridis',
+        'Accent',
+        'Spectral',
+        'Spectral_r',
+        'Wistia',
+        'Wistia_r',
+        'cividis_r',
+        'cool',
+        'coolwarm',
+        'copper',
+        'cubehelix',
+        'flag',
+        'gist_earth',
+        'gist_gray',
+        'gist_grey',
+        'gist_heat',
+        'gist_ncar',
+        'gist_stern',
+        'gist_yarg',
+        'gist_yerg',
+        'gnuplot',
+        'gnuplot2',
+        'gray',
+        'grey',
+        'hot',
+        'hsv',
+        'inferno',
+        'jet',
+        'magma',
+        'managua',
+        'nipy_spectral',
+        'ocean',
+        'pink',
+        'plasma',
+        'prism',
+        'rainbow',
+        'seismic',
+        'spring',
+        'summer',
+        'tab10',
+        'tab20',
+        'tab20b',
+        'tab20c',
+        'terrain',
+        'turbo',
+        'twilight',
+        'twilight_shifted',
+        'vanimo',
+        'winter'
+    ]
+    return colors
 
 
 def generate_strategy_colors(
@@ -123,18 +142,7 @@ def plot_gamepoints_line_graph_progression(
     player_ids = players.keys()
 
     strategy_palette_map = {}
-    colors = [
-        'Accent', 'Blues', 'Grays', 'Greens', 'Oranges', 'Purples',
-        'Spectral', 'Spectral_r', 'Wistia', 'Wistia_r', 'cividis',
-        'cividis_r', 'cool', 'coolwarm', 'copper', 'cubehelix', 'flag',
-        'gist_earth', 'gist_gray', 'gist_grey', 'gist_heat', 'gist_ncar',
-        'gist_stern', 'gist_yarg', 'gist_yerg', 'gnuplot',
-        'gnuplot2', 'gray', 'grey', 'hot', 'hsv', 'inferno',
-        'jet', 'magma', 'managua', 'nipy_spectral', 'ocean',
-        'pink', 'plasma', 'prism', 'rainbow', 'seismic', 'spring',
-        'summer', 'tab10', 'tab20', 'tab20b', 'tab20c', 'terrain',
-        'turbo', 'twilight', 'twilight_shifted', 'vanimo', 'viridis', 'winter'
-    ]
+    colors = get_colors()  # Get a list of colors from the colormaps
     for strategy in strategies:
         strategy_palette_map[strategy] = colors.pop(0)
         # Pop the first color from the list
@@ -143,7 +151,7 @@ def plot_gamepoints_line_graph_progression(
     color_list = [player_colors[pid] for pid in player_ids]
 
     plt.style.use('_mpl-gallery')
-    fig, ax = plt.subplots(figsize=(10, 6))
+    _, ax = plt.subplots(figsize=(10, 6))
 
     x_labeless = np.arange(len(x_game_labels))  # X values for the x-axis
     ax.stackplot(x_labeless, y_payoffs, colors=color_list, labels=[
