@@ -163,3 +163,34 @@ def gen_games(hyperparams: dict, gen: int) -> list:
         general_summary.append(class_points)
 
     return general_summary
+
+
+from collections import defaultdict
+
+def agrega_resultados(lista_de_jogos, nomes_dos_jogos):
+    """
+    lista_de_jogos: [jogos_1, jogos_2, ..., jogos_n]
+        onde cada jogos_i é uma lista de dicionários, um dicionário por jogo.
+    nomes_dos_jogos: ['dilema_prisioneiros', 'hawk dove', ...] — 
+        mesmo comprimento de cada jogos_i.
+    Retorna um dict no formato desejado.
+    """
+    # inicializa estrutura vazia
+    resultado_final = {
+        nome: defaultdict(list)
+        for nome in nomes_dos_jogos
+    }
+
+    # percorre cada rodada (índice i)
+    for rodada in lista_de_jogos:
+        # para cada jogo na rodada, associa ao nome
+        for nome, dict_jogo in zip(nomes_dos_jogos, rodada):
+            # para cada jogador e payoff, apenda ao histórico
+            for jogador, payoff in dict_jogo.items():
+                resultado_final[nome][jogador].append(float(payoff))
+    
+    # converte os defaultdicts de volta para dicts normais
+    return {
+        nome: dict(histórico)
+        for nome, histórico in resultado_final.items()
+    }
