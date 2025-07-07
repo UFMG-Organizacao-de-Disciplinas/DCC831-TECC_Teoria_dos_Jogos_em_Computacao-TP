@@ -102,7 +102,7 @@ def main():
 
 
 
-    num_rounds = 1
+    num_rounds = 10
     agregated_results_per_game = []
 
     games = get_payoffs()
@@ -114,13 +114,13 @@ def main():
         results = gen_games(game_class, num_rounds)
         agregated_results_per_game.append(agrega_resultados(results, list(games.keys())))
         print(agregated_results_per_game)
-        plot_games(
-            games,
-            players,
-            results,
-            gaming_parameters,
-            list(strategies.keys())
-        )
+        #plot_games(
+           # games,
+            #players,
+           # results,
+           # gaming_parameters,
+           # list(strategies.keys())
+       # )
  
 
 main()
