@@ -115,7 +115,8 @@ def main():
             games,
             players,
             results,
-            gaming_parameters
+            gaming_parameters,
+            list(strategies.keys())
         )
  
   
